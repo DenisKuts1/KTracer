@@ -1,7 +1,7 @@
 /**
  * Created by denak on 13.12.2017.
  */
-class Triangle : Iterator<Point3D> {
+class Triangle {
     var a: Point3D
     var b: Point3D
     var c: Point3D
@@ -12,18 +12,6 @@ class Triangle : Iterator<Point3D> {
     var textureB: Point2D? = null
     var textureC: Point2D? = null
     var center: Point3D
-    var current: Int
-
-    override fun hasNext(): Boolean{
-        if (current != 3) return true
-        current = 0
-        return false
-        }
-
-    override fun next(): Point3D {
-        current++
-        return this[current - 1]
-    }
 
     fun hasTextureCoords() = textureA != null && textureB != null && textureC != null
 
@@ -37,7 +25,6 @@ class Triangle : Iterator<Point3D> {
                 (a[0] + b[0] + c[0]) / 3,
                 (a[1] + b[1] + c[1]) / 3,
                 (a[2] + b[2] + c[2]) / 3)
-        current = 0
     }
 
     constructor(a: Point3D, b: Point3D, c: Point3D, normal_a: Point3D, normal_b: Point3D, normal_c: Point3D) : this(a, b, c) {

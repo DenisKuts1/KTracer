@@ -3,24 +3,12 @@ import org.jetbrains.annotations.Contract
 /**
  * Created by denak on 13.12.2017.
  */
-class Point3D : Iterator<Float> {
-
-    override fun hasNext(): Boolean{
-        if (current != 3) return true
-        current = 0
-        return false
-    }
-
-    override fun next(): Float {
-        current++
-        return this[current - 1]
-    }
+class Point3D {
 
     private var id = 0
     private var x: Float
     private var y: Float
     private var z: Float
-    private var current: Int
 
     operator fun Point3D.unaryMinus() = Point3D(-x, -y, -z)
 
@@ -114,7 +102,6 @@ class Point3D : Iterator<Float> {
         this.x = x
         this.y = y
         this.z = z
-        current = 0
     }
 
     constructor(x: Float, y: Float, z: Float, id: Int) : this(x, y, z) {

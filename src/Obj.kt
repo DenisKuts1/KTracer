@@ -1,22 +1,10 @@
 /**
  * Created by denak on 13.12.2017.
  */
-class Obj : Iterator<Triangle> {
+class Obj {
 
-    private val triangles: ArrayList<Triangle>
+    val triangles: ArrayList<Triangle>
     private var center: Point3D
-    private var current = 0
-
-    override fun hasNext(): Boolean {
-        if (current != triangles.size) return true
-        current = 0
-        return false
-    }
-
-    override fun next(): Triangle {
-        current++
-        return this[current - 1]
-    }
 
     constructor(triangles: ArrayList<Triangle>) {
         this.triangles = triangles
