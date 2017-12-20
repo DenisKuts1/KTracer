@@ -2,16 +2,16 @@
  * Created by denak on 13.12.2017.
  */
 class Triangle {
-    var a: Point3D
-    var b: Point3D
-    var c: Point3D
-    var normalA: Point3D? = null
-    var normalB: Point3D? = null
-    var normalC: Point3D? = null
-    var textureA: Point2D? = null
-    var textureB: Point2D? = null
-    var textureC: Point2D? = null
-    var center: Point3D
+    private val a: Point3D
+    private val b: Point3D
+    private val c: Point3D
+    private var normalA: Point3D? = null
+    private var normalB: Point3D? = null
+    private var normalC: Point3D? = null
+    private var textureA: Point2D? = null
+    private var textureB: Point2D? = null
+    private var textureC: Point2D? = null
+    private val center: Point3D
 
     fun hasTextureCoords() = textureA != null && textureB != null && textureC != null
 
@@ -72,5 +72,32 @@ class Triangle {
         "b" -> b[coordinates]
         "c" -> c[coordinates]
         else -> center[coordinates]
+    }
+
+    fun intersect(ray: Ray): Float{
+        val e1 = b - a
+        val e2 = c - a
+        // Вычисление вектора нормали к плоскости
+        val pvec = ray.direction % e2
+        val det = e1 * pvec
+
+        // Луч параллелен плоскости
+        if (det < 1e-8 && det > -1e-8) {
+            return 0f
+        }
+
+        val inv_det = 1 / det
+        val tvec = ray.base - a
+        val u = (tvec * pvec) * inv_det
+        if (u < 0 || u > 1) {
+            return 0f
+        }
+
+        val qvec = tvec % e1
+        val v = (ray.direction * qvec) * inv_det;
+        if (v < 0 || u + v > 1) {
+            return 0f
+        }
+        return (e2 * qvec) * inv_det
     }
 }

@@ -3,89 +3,81 @@
  */
 class Camera {
 
-    var base: Ray = Ray(Point3D(0f, 0f, 0f), Point3D(0f, 0f, 1f))
-    var focal_distance: Float = 0.toFloat()
-    var width: Float = 0.toFloat()
-    var height: Float = 0.toFloat()
-    var resolution_wight: Int = 0
-    var resolution_height: Int = 0
-    /*private val top_left_corner: Point3D
-    private val top_right_corner: Point3D
-    private val bottom_left_corner: Point3D
-    private val bottom_right_corner: Point3D*/
-    private var delta_x: Point3D? = null
-    private var delta_y: Point3D? = null
+    val base = Ray(Point3D(0f, 0f, 0f), Point3D(0f, 0f, -1f))
+    var focalDistance = 0f
+    var width = 0f
+    var height = 0f
+    var resolutionWight = 0
+    var resolutionHeight = 0
+    private val topLeftCorner: Point3D
+    private val topRightCorner: Point3D
+    private val bottomLeftCorner: Point3D
+    private val bottomRightCorner: Point3D
+    private val deltaX: Point3D
+    private val deltaY: Point3D
 
-    /*fun rotate(x_degree: Float, y_degree: Float) {
-        top_left_corner.subtractPoint(base.base)
-        top_right_corner.subtractPoint(base.base)
-        bottom_left_corner.subtractPoint(base.base)
-        bottom_right_corner.subtractPoint(base.base)
+    constructor() {
+        focalDistance = 1.0f
+        width = 1.0f
+        height = 0.5625f
+        resolutionWight = 1280
+        resolutionHeight = 720
+        topLeftCorner = Point3D(-width / 2, height / 2, focalDistance)
+        topRightCorner = Point3D(width / 2, height / 2, focalDistance)
+        bottomLeftCorner = Point3D(-width / 2, -height / 2, focalDistance)
+        bottomRightCorner = Point3D(width / 2, -height / 2, focalDistance)
+        deltaX = topRightCorner - topLeftCorner
+        deltaY = topLeftCorner - bottomLeftCorner
+        deltaX /= resolutionWight.toFloat()
+        deltaY /= resolutionHeight.toFloat()
+    }
+
+    fun rotate(x_degree: Float, y_degree: Float) {
+        topLeftCorner -= base.base
+        topRightCorner -= base.base
+        bottomLeftCorner -= base.base
+        bottomRightCorner -= base.base
         if (x_degree != 0f) {
             base.direction.rotateX(x_degree)
-            top_left_corner.rotateX(x_degree)
-            top_right_corner.rotateX(x_degree)
-            bottom_left_corner.rotateX(x_degree)
-            bottom_right_corner.rotateX(x_degree)
+            topLeftCorner.rotateX(x_degree)
+            topRightCorner.rotateX(x_degree)
+            bottomLeftCorner.rotateX(x_degree)
+            bottomRightCorner.rotateX(x_degree)
         }
         if (y_degree != 0f) {
             base.direction.rotateY(y_degree)
-            top_left_corner.rotateY(y_degree)
-            top_right_corner.rotateY(y_degree)
-            bottom_left_corner.rotateY(y_degree)
-            bottom_right_corner.rotateY(y_degree)
+            topLeftCorner.rotateY(y_degree)
+            topRightCorner.rotateY(y_degree)
+            bottomLeftCorner.rotateY(y_degree)
+            bottomRightCorner.rotateY(y_degree)
         }
-        top_left_corner.addPoint(base.base)
-        top_right_corner.addPoint(base.base)
-        bottom_left_corner.addPoint(base.base)
-        bottom_right_corner.addPoint(base.base)
-        delta_x = top_right_corner.subtractAndCreatePoint(top_left_corner)
-        delta_y = top_left_corner.subtractAndCreatePoint(bottom_left_corner)
-        delta_x!!.divide(resolution_wight.toFloat())
-        delta_y!!.divide(resolution_height.toFloat())
-    }*/
+        topLeftCorner += base.base
+        topRightCorner += base.base
+        bottomLeftCorner += base.base
+        bottomRightCorner += base.base
+        val newDeltaX = topRightCorner - topLeftCorner
+        val newDeltaY = topLeftCorner - bottomLeftCorner
+        deltaX[0] = newDeltaX[0]
+        deltaX[1] = newDeltaX[1]
+        deltaX[2] = newDeltaX[2]
+        deltaY[0] = newDeltaY[0]
+        deltaY[1] = newDeltaY[1]
+        deltaY[2] = newDeltaY[2]
+        deltaX /= resolutionWight.toFloat()
+        deltaY /= resolutionHeight.toFloat()
+    }
 
-    /*fun getPixel(i: Int, j: Int): Point3D {
+    operator fun get(i: Int, j: Int): Point3D{
         val point = Point3D(
-                delta_x!!.x * i - delta_y!!.x * j,
-                delta_x!!.y * i - delta_y!!.y * j,
-                delta_x!!.z * i - delta_y!!.z * j
+                deltaX[0] * i - deltaY[0] * j,
+                deltaX[1] * i - deltaY[1] * j,
+                deltaX[2] * i - deltaY[2] * j
         )
-        point.addPoint(top_left_corner)
+        point += topLeftCorner
+        point -= base.base
+        point.normalize()
         return point
-    }*/
-
-    /*init {
-        focal_distance = 1.0f
-        width = 1.0f
-        height = 0.5625f
-        resolution_wight = 1280
-        resolution_height = 720
-        top_left_corner = Point3D(
-                -width / 2,
-                height / 2,
-                focal_distance
-        )
-        top_right_corner = Point3D(
-                width / 2,
-                height / 2,
-                focal_distance
-        )
-        bottom_left_corner = Point3D(
-                -width / 2,
-                -height / 2,
-                focal_distance
-        )
-        bottom_right_corner = Point3D(
-                width / 2,
-                -height / 2,
-                focal_distance
-        )
-        delta_x = top_right_corner.subtractAndCreatePoint(top_left_corner)
-        delta_y = top_left_corner.subtractAndCreatePoint(bottom_left_corner)
-        delta_x!!.divide(resolution_wight.toFloat())
-        delta_y!!.divide(resolution_height.toFloat())
-    }*/
+    }
 
 
 }

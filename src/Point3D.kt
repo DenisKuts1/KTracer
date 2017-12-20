@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.Contract
 
 /**
  * Created by denak on 13.12.2017.
@@ -12,21 +11,21 @@ class Point3D {
 
     operator fun Point3D.unaryMinus() = Point3D(-x, -y, -z)
 
-    operator fun Point3D.plus(point3D: Point3D) = Point3D(x + point3D.x, y + point3D.y, z + point3D.z)
+    operator fun plus(point3D: Point3D) = Point3D(x + point3D.x, y + point3D.y, z + point3D.z)
 
-    operator fun Point3D.plusAssign(point3D: Point3D) {
+    operator fun plusAssign(point3D: Point3D) {
         x += point3D.x
         y += point3D.y
         z += point3D.z
     }
 
-    operator fun Point3D.minus(point3D: Point3D) = Point3D(x - point3D.x, y - point3D.y, z - point3D.z)
-
-    operator fun Point3D.minusAssign(point3D: Point3D) {
+    operator fun minusAssign(point3D: Point3D) {
         x -= point3D.x
         y -= point3D.y
         z -= point3D.z
     }
+
+    operator fun minus(point3D: Point3D) = Point3D(x - point3D.x, y - point3D.y, z - point3D.z)
 
     operator fun div(float: Float) = Point3D(x / float, y / float, z / float)
 

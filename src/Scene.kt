@@ -2,7 +2,7 @@
  * Created by denis on 16.12.2017.
  */
 class Scene{
-    var camera: Camera
+    val camera: Camera
     val objects: ArrayList<Obj> = ArrayList()
     val lightSources: ArrayList<LightSource> = ArrayList()
 
